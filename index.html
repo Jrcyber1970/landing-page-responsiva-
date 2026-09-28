@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JrMovies — Catálogo de Filmes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="#home">JR<span>MOVIES</span></a>
+    <nav>
+      <a href="#home">Início</a>
+      <a href="#catalogo">Filmes</a>
+      <a href="#admin">Administração</a>
+    </nav>
+    <button class="btn btn-primary" id="newMovieTop">+ Cadastrar filme</button>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">CATÁLOGO CINEMATOGRÁFICO</span>
+        <h1>Seu universo de filmes,<br><strong>organizado em um só lugar.</strong></h1>
+        <p>Cadastre, pesquise e explore filmes com uma experiência moderna, rápida e responsiva.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#catalogo">Explorar filmes</a>
+          <button class="btn btn-ghost" id="heroAdd">Cadastrar filme</button>
+        </div>
+      </div>
+      <div id="heroMovie" class="hero-card"></div>
+    </section>
+
+    <section class="section" id="catalogo">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">CATÁLOGO</span>
+          <h2>Filmes</h2>
+        </div>
+        <div class="results-count" id="resultsCount"></div>
+      </div>
+
+      <div class="filters">
+        <div class="search-wrap">
+          <span>⌕</span>
+          <input id="searchInput" type="search" placeholder="Pesquisar filmes...">
+        </div>
+        <select id="genreFilter"><option value="">Todos os gêneros</option></select>
+        <select id="yearFilter"><option value="">Todos os anos</option></select>
+        <select id="ratingFilter">
+          <option value="">Todas as notas</option>
+          <option value="9">9 ou mais</option>
+          <option value="8">8 ou mais</option>
+          <option value="7">7 ou mais</option>
+        </select>
+        <select id="sortFilter">
+          <option value="recent">Mais recentes</option>
+          <option value="old">Mais antigos</option>
+          <option value="rating">Melhor avaliação</option>
+          <option value="alpha">A-Z</option>
+        </select>
+      </div>
+
+      <div id="movieGrid" class="movie-grid"></div>
+      <div id="emptyState" class="empty hidden">
+        <div class="empty-icon">🎬</div>
+        <h3>Nenhum filme encontrado</h3>
+        <p>Tente alterar os filtros ou cadastrar um novo filme.</p>
+      </div>
+    </section>
+
+    <section class="section admin-section" id="admin">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">GESTÃO</span>
+          <h2>Painel administrativo</h2>
+        </div>
+        <button class="btn btn-primary" id="newMovieAdmin">+ Novo filme</button>
+      </div>
+
+      <div class="stats">
+        <article class="stat"><span>Total de filmes</span><strong id="statTotal">0</strong></article>
+        <article class="stat"><span>Em destaque</span><strong id="statFeatured">0</strong></article>
+        <article class="stat"><span>Nota média</span><strong id="statAverage">0.0</strong></article>
+        <article class="stat"><span>Gêneros</span><strong id="statGenres">0</strong></article>
+      </div>
+
+      <div class="admin-table-wrap">
+        <table>
+          <thead><tr><th>Filme</th><th>Ano</th><th>Gênero</th><th>Nota</th><th>Status</th><th>Ações</th></tr></thead>
+          <tbody id="adminTable"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal hidden" id="movieModal">
+    <div class="modal-box">
+      <button class="modal-close" data-close>×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="formModal">
+    <div class="modal-box form-box">
+      <button class="modal-close" data-close>×</button>
+      <div class="form-header">
+        <span class="eyebrow">ADMINISTRAÇÃO</span>
+        <h2 id="formTitle">Cadastrar filme</h2>
+        <p>Preencha os dados do filme. Os dados ficam salvos neste navegador.</p>
+      </div>
+      <form id="movieForm">
+        <input type="hidden" id="movieId">
+        <div class="form-grid">
+          <label>Título*<input id="title" required></label>
+          <label>Título original<input id="originalTitle"></label>
+          <label>Ano*<input id="year" type="number" min="1888" max="2100" required></label>
+          <label>Data de lançamento<input id="releaseDate" type="date"></label>
+          <label>Diretor<input id="director"></label>
+          <label>País<input id="country"></label>
+          <label>Gênero*<input id="genre" placeholder="Ex.: Ficção científica" required></label>
+          <label>Duração (min)<input id="duration" type="number" min="1"></label>
+          <label>Classificação<input id="classification" placeholder="Ex.: 12 anos"></label>
+          <label>Nota (0–10)<input id="rating" type="number" min="0" max="10" step="0.1" value="8"></label>
+          <label>Pôster (URL)<input id="posterUrl" type="url" placeholder="https://..."></label>
+          <label>Trailer (URL)<input id="trailerUrl" type="url" placeholder="https://youtube.com/..."></label>
+          <label class="full">Elenco principal<input id="cast" placeholder="Ator 1, Ator 2, Ator 3"></label>
+          <label class="full">Sinopse<textarea id="synopsis" rows="4"></textarea></label>
+          <label>Status
+            <select id="status"><option>Ativo</option><option>Inativo</option></select>
+          </label>
+          <label class="check"><input id="featured" type="checkbox"> Filme em destaque</label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" data-close>Cancelar</button>
+          <button class="btn btn-primary" type="submit">Salvar filme</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <footer>JrMovies • Catálogo de filmes • HTML + CSS + JavaScript</footer>
+  <script src="script.js"></script>
+</body>
+</html>
